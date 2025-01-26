@@ -1,10 +1,5 @@
 # AI Chat Box
 
-El archivo `README.md` es fundamental porque aparece en la página de tu paquete en **pub.dev**. Un ejemplo:
-
-```markdown
-# AI Chat Box
-
 A customizable chat widget for Flutter applications that supports AI-like conversations via dynamic callbacks. Perfect for integrating with AI APIs, chatbots, or other dynamic chat systems.
 
 ## Features
