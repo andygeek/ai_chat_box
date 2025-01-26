@@ -30,7 +30,7 @@ class ExamplePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GenericChatWidget(
+    return AiChatBox(
       initialMessages: [
         {"bot": "¡Hola! Soy tu asistente de chat AI."},
       ],

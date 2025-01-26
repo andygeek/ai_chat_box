@@ -4,3 +4,7 @@
 
 - Initial release.
 - Added `GenericChatWidget` with support for dynamic callbacks.
+
+## 0.2.0
+
+- Fix workflow

@@ -17,7 +17,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
-        home: GenericChatWidget(
+        home: AiChatBox(
           initialMessages: initialMessages,
           onSend: mockOnSend,
           hiddenMessagesCount: 1,
