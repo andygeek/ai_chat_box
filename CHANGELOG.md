@@ -16,3 +16,7 @@
 ## 0.3.0
 
 - Fix workflow and examples
+
+## 0.3.1
+
+- Fix README

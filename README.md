@@ -12,9 +12,8 @@ A customizable chat widget for Flutter applications that supports AI-like conver
 
 1. Add the dependency:
 
-```yaml
-dependencies:
-  ai_chat_box: ^1.0.0
+```
+dart pub add ai_chat_box
 ```
 
 2. Import the package:
