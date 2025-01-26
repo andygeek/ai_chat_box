@@ -74,7 +74,8 @@ class _AiChatBoxState extends State<AiChatBox> {
     setState(() {
       _messages.add({"bot": ""});
     });
-    final botIndex = _messages.length - 1; // Index of the bot's placeholder message
+    final botIndex =
+        _messages.length - 1; // Index of the bot's placeholder message
 
     // Listen to the callback to retrieve the bot's response.
     widget.onSend(_messages).listen(
@@ -172,6 +173,7 @@ class _AiChatBoxState extends State<AiChatBox> {
                   ),
                 ),
                 const SizedBox(width: 8),
+
                 /// Send button
                 ElevatedButton(
                   onPressed: () => _sendMessage(_controller.text),

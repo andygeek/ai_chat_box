@@ -9,7 +9,8 @@ void main() {
     yield "Echo: $lastMessage";
   }
 
-  testWidgets('GenericChatWidget hides initial context messages', (WidgetTester tester) async {
+  testWidgets('GenericChatWidget hides initial context messages',
+      (WidgetTester tester) async {
     final initialMessages = [
       {"bot": "Context: This is a hidden message."},
       {"bot": "Visible message for the user."},

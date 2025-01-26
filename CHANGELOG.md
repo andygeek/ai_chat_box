@@ -12,3 +12,7 @@
 ## 0.2.1
 
 - Fix README
+
+## 0.2.2
+
+- Fix example

@@ -32,7 +32,7 @@ Stream<String> _mockChatCallback(List<Map<String, String>> messages) async* {
   yield "Response for: $lastUserMessage";
 }
 
-GenericChatWidget(
+AiChatBox(
   initialMessages: [
     {"bot": "Hello! How can I assist you?"},
   ],
