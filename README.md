@@ -1,10 +1,9 @@
 # AI Chat Box
 
-A customizable chat widget for Flutter applications that supports AI-like conversations via dynamic callbacks. Perfect for integrating with AI APIs, chatbots, or other dynamic chat systems.
+A chat widget for Flutter applications that supports AI-like conversations via dynamic callbacks. Perfect for integrating with AI APIs, chatbots, or other dynamic chat systems.
 
 ## Features
 
-- Customizable UI for user and bot messages.
 - Supports streaming responses for real-time updates.
 - Easy to integrate with any API or service.
 
@@ -31,13 +30,24 @@ Stream<String> _mockChatCallback(List<Map<String, String>> messages) async* {
   yield "Response for: $lastUserMessage";
 }
 
-AiChatBox(
-  initialMessages: [
-    {"bot": "Hello! How can I assist you?"},
-  ],
-  onSend: _mockChatCallback,
-  hiddenMessagesCount: 0,
-);
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'AI Chat Box Example',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: AiChatBox(
+      initialMessages: [
+        {"bot": "Hi! I'm a bot. Ask me anything!"},
+      ],
+      onSend: _mockChatCallback,
+      )
+    );
+  }
+}
+
 ```
 
 ## Example App
