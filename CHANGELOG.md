@@ -8,3 +8,7 @@
 ## 0.2.0
 
 - Fix workflow
+
+## 0.2.1
+
+- Fix README
