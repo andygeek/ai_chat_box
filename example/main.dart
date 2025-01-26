@@ -35,7 +35,6 @@ class ExamplePage extends StatelessWidget {
         {"bot": "¡Hola! Soy tu asistente de chat AI."},
       ],
       onSend: _mockChatCallback,
-      title: 'Chat AI Demo',
     );
   }
 }

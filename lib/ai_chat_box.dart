@@ -29,15 +29,11 @@ class AiChatBox extends StatefulWidget {
   /// pass it in [initialMessages] and set this to 1.
   final int hiddenMessagesCount;
 
-  /// Title to be displayed in the AppBar.
-  final String title;
-
   const AiChatBox({
     super.key,
     required this.initialMessages,
     required this.onSend,
     this.hiddenMessagesCount = 0,
-    this.title = 'Chat',
   });
 
   @override
@@ -48,36 +44,29 @@ class _AiChatBoxState extends State<AiChatBox> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  /// List to hold both user and bot messages.
   late List<Map<String, String>> _messages;
 
   @override
   void initState() {
     super.initState();
-    // Initialize the message list with the provided initial messages.
     _messages = List.from(widget.initialMessages);
   }
 
-  /// Handles sending the user's message and listens for responses.
   void _sendMessage(String userMessage) {
     final trimmedMessage = userMessage.trim();
     if (trimmedMessage.isEmpty) return;
 
-    // Add the user's message to the list.
     setState(() {
       _messages.add({"user": trimmedMessage});
     });
     _controller.clear();
     _scrollToBottom();
 
-    // Add a placeholder for the bot's response.
     setState(() {
       _messages.add({"bot": ""});
     });
-    final botIndex =
-        _messages.length - 1; // Index of the bot's placeholder message
+    final botIndex = _messages.length - 1;
 
-    // Listen to the callback to retrieve the bot's response.
     widget.onSend(_messages).listen(
       (partialResponse) {
         setState(() {
@@ -95,8 +84,6 @@ class _AiChatBoxState extends State<AiChatBox> {
     );
   }
 
-  /// Animates the scroll to the bottom of the message list
-  /// so the user can see the most recent messages.
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -111,87 +98,73 @@ class _AiChatBoxState extends State<AiChatBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: [
-          /// Message list view
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              // Adjust the item count to exclude hidden messages
-              itemCount: _messages.length - widget.hiddenMessagesCount,
-              itemBuilder: (context, index) {
-                // Adjust the index to skip hidden messages
-                final realIndex = index + widget.hiddenMessagesCount;
-                final message = _messages[realIndex];
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: _messages.length - widget.hiddenMessagesCount,
+            itemBuilder: (context, index) {
+              final realIndex = index + widget.hiddenMessagesCount;
+              final message = _messages[realIndex];
 
-                // Determine if the message is from the user or bot
-                final isUser = message.containsKey("user");
-                final textToShow = isUser ? message["user"]! : message["bot"]!;
+              final isUser = message.containsKey("user");
+              final textToShow = isUser ? message["user"]! : message["bot"]!;
 
-                return Align(
-                  alignment:
-                      isUser ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 5,
-                      horizontal: 10,
-                    ),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: isUser ? Colors.blue[100] : Colors.grey[300],
+              return Align(
+                alignment:
+                    isUser ? Alignment.centerRight : Alignment.centerLeft,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: isUser ? Colors.blue[100] : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: GptMarkdown(
+                    textToShow,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    hintText: 'Type your message...',
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: GptMarkdown(
-                      textToShow,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
-          /// Input box + send button
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                /// Input field
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
                   ),
                 ),
-                const SizedBox(width: 8),
-
-                /// Send button
-                ElevatedButton(
-                  onPressed: () => _sendMessage(_controller.text),
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(16),
-                    backgroundColor: Colors.black,
-                  ),
-                  child: const Icon(
-                    Icons.send,
-                    color: Colors.white,
-                  ),
+              ),
+              const SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: () => _sendMessage(_controller.text),
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(16),
+                  backgroundColor: Colors.black,
                 ),
-              ],
-            ),
+                child: const Icon(
+                  Icons.send,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

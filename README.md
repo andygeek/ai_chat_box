@@ -36,7 +36,7 @@ AiChatBox(
     {"bot": "Hello! How can I assist you?"},
   ],
   onSend: _mockChatCallback,
-  title: 'Chat Demo',
+  hiddenMessagesCount: 0,
 );
 ```
 

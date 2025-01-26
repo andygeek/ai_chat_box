@@ -22,7 +22,6 @@ void main() {
           initialMessages: initialMessages,
           onSend: mockOnSend,
           hiddenMessagesCount: 1,
-          title: 'Hidden Context Test',
         ),
       ),
     );
