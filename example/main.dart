@@ -17,14 +17,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AI Chat Box Example',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: AiChatBox(
-      initialMessages: [
-        {"bot": "Hi! I'm a bot. Ask me anything!"},
-      ],
-      onSend: _mockChatCallback,
-      )
-    );
+        title: 'AI Chat Box Example',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: AiChatBox(
+          initialMessages: [
+            {"bot": "Hi! I'm a bot. Ask me anything!"},
+          ],
+          onSend: _mockChatCallback,
+        ));
   }
 }
