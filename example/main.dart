@@ -6,7 +6,7 @@ void main() {
 }
 
 Stream<String> _mockChatCallback(List<Map<String, String>> messages) async* {
-  await Future.delayed(const Duration(seconds: 1));
+  await Future.delayed(const Duration(seconds: 5));
   final lastUserMessage = messages.last['user'] ?? '';
   yield lastUserMessage;
 }

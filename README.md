@@ -27,7 +27,7 @@ import 'package:ai_chat_box/ai_chat_box.dart';
 Stream<String> _mockChatCallback(List<Map<String, String>> messages) async* {
   await Future.delayed(const Duration(seconds: 1));
   final lastUserMessage = messages.last['user'] ?? '';
-  yield "Response for: $lastUserMessage";
+  yield 'Response for: $lastUserMessage';
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: AiChatBox(
       initialMessages: [
-        {"bot": "Hi! I'm a bot. Ask me anything!"},
+        {'bot': 'Hi! I'm a bot. Ask me anything!'},
       ],
       onSend: _mockChatCallback,
       )

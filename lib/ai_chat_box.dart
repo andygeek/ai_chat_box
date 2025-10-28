@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 
 /// Callback for handling message sending.
 /// - [messages] is the complete list of accumulated messages so far.
-///   Each message is a Map that contains "user" for user messages
-///   and "bot" (or any other key) for bot responses.
+///   Each message is a Map that contains 'user' for user messages
+///   and 'bot' (or any other key) for bot responses.
 /// - Returns a [Stream<String>] to emit partial responses
 ///   (if your API/service supports it). Otherwise, you can use
 ///   [Future<String>] for a single complete response.
@@ -45,6 +47,7 @@ class _AiChatBoxState extends State<AiChatBox> {
   final ScrollController _scrollController = ScrollController();
 
   late List<Map<String, String>> _messages;
+  Timer? _loadingTimer;
 
   @override
   void initState() {
@@ -52,32 +55,52 @@ class _AiChatBoxState extends State<AiChatBox> {
     _messages = List.from(widget.initialMessages);
   }
 
+  @override
+  void dispose() {
+    _loadingTimer?.cancel();
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _sendMessage(String userMessage) {
     final trimmedMessage = userMessage.trim();
     if (trimmedMessage.isEmpty) return;
 
     setState(() {
-      _messages.add({"user": trimmedMessage});
+      _messages.add({'user': trimmedMessage});
     });
     _controller.clear();
     _scrollToBottom();
 
     setState(() {
-      _messages.add({"bot": ""});
+      _messages.add({'bot': '.'});
     });
     final botIndex = _messages.length - 1;
 
+    int dotCount = 1;
+    _loadingTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (mounted) {
+        setState(() {
+          dotCount = (dotCount % 3) + 1;
+          _messages[botIndex]['bot'] = '.' * dotCount;
+        });
+      }
+    });
+
     widget.onSend(_messages).listen(
       (partialResponse) {
+        _loadingTimer?.cancel();
         setState(() {
-          _messages[botIndex]["bot"] = partialResponse;
+          _messages[botIndex]['bot'] = partialResponse;
         });
         _scrollToBottom();
       },
       onError: (error) {
+        _loadingTimer?.cancel();
         setState(() {
-          _messages[botIndex]["bot"] =
-              "An error occurred while fetching the response: $error";
+          _messages[botIndex]['bot'] =
+              'An error occurred while fetching the response: $error';
         });
         _scrollToBottom();
       },
@@ -108,8 +131,8 @@ class _AiChatBoxState extends State<AiChatBox> {
               final realIndex = index + widget.hiddenMessagesCount;
               final message = _messages[realIndex];
 
-              final isUser = message.containsKey("user");
-              final textToShow = isUser ? message["user"]! : message["bot"]!;
+              final isUser = message.containsKey('user');
+              final textToShow = isUser ? message['user']! : message['bot']!;
 
               return Align(
                 alignment:
